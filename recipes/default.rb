@@ -11,7 +11,7 @@ include_recipe 'java'
 include_recipe 'chef-vault'
 
 tomcat_vault = chef_vault_item("tomcat", "admin_manager")
-keystore_password = chef_vault_item("certs", "keystore_pwd")['password']
+keystore_password = chef_vault_item("certs", "java_keystore")['password']
 
 tomcat_install 'tomcat8' do
   version "8.5.5"
