@@ -91,7 +91,13 @@ template "#{node['tomcat']['install_path']}/conf/web.xml" do
   mode 0644
   notifies :restart, "service[#{node['tomcat']['service_name']}]"
   variables(
-    cors: node['tomcat']['cors'],
+    cors: node['tomcat']['cors']['enabled'],
+    allowed_origins: ['tomcat']['cors']['allowed_origins'],
+    allowed_methods: ['tomcat']['cors']['allowed_methods'],
+    allowed_headers: ['tomcat']['cors']['allowed_headers'],
+    exposed_headers: ['tomcat']['cors']['exposed_headers'],
+    credentials: ['tomcat']['cors']['credentials'],
+    preflight_maxage: ['tomcat']['cors']['preflight_maxage'],
     http_to_https: node['tomcat']['http_to_https'],
     request_dumper: node['tomcat']['request_dumper']
   )

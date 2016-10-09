@@ -1,6 +1,12 @@
 default['tomcat']['install_path'] = '/opt/tomcat8'
 default['tomcat']['service_name'] = 'tomcat_8'
-default['tomcat']['cors'] = false
+default['tomcat']['cors']['enabled'] = false
+default['tomcat']['cors']['allowed_origins'] = "*"
+default['tomcat']['cors']['allowed_methods'] = "GET,POST,HEAD,OPTIONS,PUT,PATCH"
+default['tomcat']['cors']['allowed_headers'] = "Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers"
+default['tomcat']['cors']['exposed_headers'] = "Access-Control-Allow-Origin,Access-Control-Allow-Credentials"
+default['tomcat']['cors']['credentials'] = true
+default['tomcat']['cors']['preflight_maxage'] = 10
 default['tomcat']['http_to_https'] = false
 default['tomcat']['request_dumper'] = false
 default['tomcat']['user'] = 'tomcat'
