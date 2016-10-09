@@ -464,7 +464,7 @@
     </filter>
 -->
 
-<% if @cors_enabled %>
+<% if @cors %>
     <filter>
         <filter-name>CorsFilter</filter-name>
         <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
@@ -601,7 +601,7 @@
     </filter-mapping>
 -->
 
-<% if @cors_enabled %>
+<% if @cors %>
     <filter-mapping>
         <filter-name>CorsFilter</filter-name>
         <url-pattern>/*</url-pattern>

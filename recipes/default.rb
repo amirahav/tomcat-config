@@ -10,7 +10,6 @@
 include_recipe 'java'
 include_recipe 'chef-vault'
 
-tomcat_vault = chef_vault_item("tomcat", "admin_manager")
 keystore_password = chef_vault_item("certs", "java_keystore")['password']
 
 tomcat_install 'tomcat8' do
@@ -18,6 +17,8 @@ tomcat_install 'tomcat8' do
   tomcat_user node['tomcat']['user']
   tomcat_group node['tomcat']['group']
   install_path node['tomcat']['install_path']
+  exclude_manager node['tomcat']['manager_webapp']
+  exclude_hostmanager node['tomcat']['manager_webapp']
 end
 
 tomcat_service '8' do
@@ -131,28 +132,31 @@ template "#{node['tomcat']['install_path']}/conf/logging.properties" do
   )
 end
 
-template "#{node['tomcat']['install_path']}/conf/tomcat-users.xml" do
-  source "tomcat-users.xml.erb"
-  mode 0644
-  owner node['tomcat']['user']
-  group node['tomcat']['group']
-  notifies :restart, "service[#{node['tomcat']['service_name']}]"
-  variables(
-    roles: ['manager-gui'],
-    users: [ 
-      {'name' => tomcat_vault['username'],  'password' => tomcat_vault['password'], 'roles' => ['manager-gui', 'manager', 'manager-script']}   
-    ]
-  )
-end
+if node['tomcat']['manager_webapp']
+  tomcat_vault = chef_vault_item("tomcat", "admin_manager")
+  template "#{node['tomcat']['install_path']}/conf/tomcat-users.xml" do
+    source "tomcat-users.xml.erb"
+    mode 0644
+    owner node['tomcat']['user']
+    group node['tomcat']['group']
+    notifies :restart, "service[#{node['tomcat']['service_name']}]"
+    variables(
+      roles: ['manager-gui'],
+      users: [ 
+        {'name' => tomcat_vault['username'],  'password' => tomcat_vault['password'], 'roles' => ['manager-gui', 'manager', 'manager-script']}   
+      ]
+    )
+  end
 
-cookbook_file "#{node['tomcat']['install_path']}/conf/Catalina/localhost/manager.xml" do
-  source 'manager.xml'
-  sensitive true
-  mode 0644
-  owner node['tomcat']['user']
-  group node['tomcat']['group']
-  notifies :restart, "service[#{node['tomcat']['service_name']}]"
-end 
+  cookbook_file "#{node['tomcat']['install_path']}/conf/Catalina/localhost/manager.xml" do
+    source 'manager.xml'
+    sensitive true
+    mode 0644
+    owner node['tomcat']['user']
+    group node['tomcat']['group']
+    notifies :restart, "service[#{node['tomcat']['service_name']}]"
+  end
+end
 
 template "#{node['tomcat']['install_path']}/conf/context.xml" do
   source "context.xml.erb"
