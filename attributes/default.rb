@@ -1,4 +1,5 @@
 default['tomcat']['install_path'] = '/opt/tomcat8'
+default['tomcat']['version'] = "8.5.6"
 default['tomcat']['service_name'] = 'tomcat_8'
 default['tomcat']['cors']['enabled'] = false
 default['tomcat']['cors']['allowed_origins'] = "*"
