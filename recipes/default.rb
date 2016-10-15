@@ -17,8 +17,8 @@ tomcat_install 'tomcat8' do
   tomcat_user node['tomcat']['user']
   tomcat_group node['tomcat']['group']
   install_path node['tomcat']['install_path']
-  exclude_manager node['tomcat']['manager_webapp']
-  exclude_hostmanager node['tomcat']['manager_webapp']
+  exclude_manager node['tomcat']['exclude_manager_webapp']
+  exclude_hostmanager node['tomcat']['exclude_manager_webapp']
 end
 
 tomcat_service '8' do
@@ -138,7 +138,7 @@ template "#{node['tomcat']['install_path']}/conf/logging.properties" do
   )
 end
 
-if node['tomcat']['manager_webapp']
+unless node['tomcat']['exclude_manager_webapp']
   tomcat_vault = chef_vault_item("tomcat", "admin_manager")
   template "#{node['tomcat']['install_path']}/conf/tomcat-users.xml" do
     source "tomcat-users.xml.erb"
