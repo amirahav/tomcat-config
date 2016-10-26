@@ -10,7 +10,7 @@
 include_recipe 'java'
 include_recipe 'chef-vault'
 
-keystore_password = chef_vault_item("certs", "java_keystore")['password']
+keystore_password = chef_vault_item("certs", "java_keystore")['password'] if node['tomcat']['https_port']
 
 tomcat_install 'tomcat8' do
   version node['tomcat']['version']
