@@ -21,9 +21,10 @@ tomcat_install 'tomcat8' do
   exclude_hostmanager node['tomcat']['exclude_manager_webapp']
 end
 
-user_ulimit node['tomcat']['user'] do
-  filehandle_limit 65535
-  only_if { el6? }
+if el6?
+  user_ulimit node['tomcat']['user'] do
+    filehandle_limit 65535
+  end
 end
 
 tomcat_service '8' do
