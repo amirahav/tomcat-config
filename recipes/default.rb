@@ -21,6 +21,11 @@ tomcat_install 'tomcat8' do
   exclude_hostmanager node['tomcat']['exclude_manager_webapp']
 end
 
+user_ulimit node['tomcat']['user'] do
+  filehandle_limit 65535
+  only_if { el6? }
+end
+
 tomcat_service '8' do
   action [:start, :enable]
   sensitive true
@@ -31,9 +36,7 @@ tomcat_service '8' do
     { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' },
     { 'JAVA_OPTS' => node['tomcat']['java_opts'] }
   ]
-  service_vars [
-    { 'LimitNOFILE' => '65535' }
-  ]
+  service_vars [ { 'LimitNOFILE' => '65535' } ] if el7?
 end
 
 service node['tomcat']['service_name'] do
@@ -148,8 +151,16 @@ unless node['tomcat']['exclude_manager_webapp']
     notifies :restart, "service[#{node['tomcat']['service_name']}]"
     variables(
       roles: ['manager-gui'],
-      users: [ 
-        {'name' => tomcat_vault['username'],  'password' => tomcat_vault['password'], 'roles' => ['manager-gui', 'manager', 'manager-script']}   
+      users: [
+        {
+          'name' => tomcat_vault['username'],
+          'password' => tomcat_vault['password'],
+          'roles' => [
+            'manager-gui',
+            'manager',
+            'manager-script'
+          ]
+        }
       ]
     )
   end
