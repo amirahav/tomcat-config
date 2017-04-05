@@ -48,3 +48,5 @@ default['tomcat']['access_log_pattern'] = 'common'
 default['tomcat']['max_heap'] = "#{(node['memory']['total'].to_i * 0.6).floor / 1024}m"
 default['tomcat']['java_opts'] = "-Djava.awt.headless=true -Xms256m -Xmx#{node['tomcat']['max_heap']} -XX:+UseParNewGC -XX:+UseConcMarkSweepGC"
 default['tomcat']['exclude_manager_webapp'] = false
+default['tomcat']['tarball_url'] = nil
+default['tomcat']['verify_checksum'] = true

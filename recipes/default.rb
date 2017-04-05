@@ -19,6 +19,8 @@ tomcat_install 'tomcat8' do
   install_path node['tomcat']['install_path']
   exclude_manager node['tomcat']['exclude_manager_webapp']
   exclude_hostmanager node['tomcat']['exclude_manager_webapp']
+  tarball_uri node['tomcat']['tarball_url'] if node['tomcat']['tarball_url']
+  verify_checksum node['tomcat']['verify_checksum']
 end
 
 if el6?
