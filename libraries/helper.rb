@@ -4,7 +4,7 @@ module TomcatConfig
       case node['platform']
       when "amazon"
         true if %w{2013 2014 2015 2016}.include?(node['platform_version'].to_i)
-      when "centos", "redhat"
+      when "centos", "redhat", "oracle"
         true if node['platform_version'].to_i == 6
       else
         false
@@ -13,7 +13,7 @@ module TomcatConfig
 
     def el7?
       case node['platform']
-      when "centos", "redhat"
+      when "centos", "redhat", "oracle"
         true if node['platform_version'].to_i == 7
       else
         false
