@@ -95,7 +95,7 @@
     -->
 <% if @https_port %>
 
-    <Connector port="<%= @https_port %>" protocol="org.apache.coyote.http11.Http11NioProtocol"
+    <Connector port="<%= @https_port %>" protocol="org.apache.coyote.http11.Http11Nio2Protocol"
                SSLEnabled="true"
                keystoreFile="<%= @keystore_file %>"
                keystorePass="<%= @keystore_password %>"
@@ -106,7 +106,7 @@
                scheme="https"
                secure="true"
                clientAuth="<%= @client_auth %>"
-               sslProtocol="TLS"
+               sslProtocol="TLSv1.2"
              <% if @https_protocols %>
                sslEnabledProtocols="<%= @https_protocols %>"
              <% end %>
