@@ -88,6 +88,7 @@ template "#{node['tomcat']['install_path']}/conf/server.xml" do
     ldap_group: node['tomcat']['ldap_group'],
     ldap_user_search: node['tomcat']['ldap_user_search'],
     ldap_role_search: node['tomcat']['ldap_role_search'],
+    max_http_header_size: node['tomcat']['max_http_header_size'],
     access_log_pattern: node['tomcat']['access_log_pattern']
   )
 end
