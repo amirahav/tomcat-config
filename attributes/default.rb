@@ -45,6 +45,7 @@ default['tomcat']['ldap_domain_name'] = nil
 default['tomcat']['ldap_user_search'] = "(sAMAccountName={0})"
 default['tomcat']['ldap_role_search'] = "(member={0})"
 default['tomcat']['access_log_pattern'] = 'common'
+default['tomcat']['max_http_header_size'] = nil
 default['tomcat']['max_heap'] = "#{(node['memory']['total'].to_i * 0.6).floor / 1024}m"
 default['tomcat']['java_opts'] = "-Djava.awt.headless=true -Xms256m -Xmx#{node['tomcat']['max_heap']} -XX:+UseParNewGC -XX:+UseConcMarkSweepGC"
 default['tomcat']['exclude_manager_webapp'] = false
