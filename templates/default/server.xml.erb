@@ -110,6 +110,9 @@
                secure="true"
                clientAuth="<%= @client_auth %>"
                sslProtocol="TLSv1.2"
+	     <% if @max_http_header_size%>
+	       maxHttpHeaderSize="<%= @max_http_header_size %>"
+	     <% end %>
              <% if @https_protocols %>
                sslEnabledProtocols="<%= @https_protocols %>"
              <% end %>
