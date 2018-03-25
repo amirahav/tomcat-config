@@ -14,7 +14,7 @@ keystore_password = chef_vault_item("certs", "java_keystore")['password'] if nod
 
 package 'redhat-lsb-core' if platform_family?('amazon') || platform?('amazon')
 
-tomcat_install 'tomcat8' do
+tomcat_install "tomcat#{node['tomcat']['major_version']}" do
   version node['tomcat']['version']
   tomcat_user node['tomcat']['user']
   tomcat_group node['tomcat']['group']
@@ -31,7 +31,7 @@ if el6?
   end
 end
 
-tomcat_service '8' do
+tomcat_service node['tomcat']['major_version'] do
   action [:start, :enable]
   sensitive true
   tomcat_user node['tomcat']['user']
@@ -112,7 +112,7 @@ template "#{node['tomcat']['install_path']}/conf/web.xml" do
   )
 end
 
-directory "/var/log/tomcat8" do
+directory "/var/log/tomcat#{node['tomcat']['major_version']}" do
   owner node['tomcat']['user']
   group node['tomcat']['group']
   mode 0755
@@ -125,14 +125,14 @@ directory "#{node['tomcat']['install_path']}/logs" do
 end
 
 link "#{node['tomcat']['install_path']}/logs" do
-  to "/var/log/tomcat8"
+  to "/var/log/tomcat#{node['tomcat']['major_version']}"
 end
 
-template "/etc/logrotate.d/tomcat8" do
+template "/etc/logrotate.d/tomcat#{node['tomcat']['major_version']}" do
   source "#{node['tomcat']['major_version']}/logrotate.erb"
   mode 0644
   variables(
-    log_dir: "/var/log/tomcat8"
+    log_dir: "/var/log/tomcat#{node['tomcat']['major_version']}"
   )
 end
 
