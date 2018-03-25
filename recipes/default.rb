@@ -49,7 +49,7 @@ service node['tomcat']['service_name'] do
 end
 
 template "#{node['tomcat']['install_path']}/conf/server.xml" do
-  source 'server.xml.erb'
+  source "#{node['tomcat']['major_version']}/server.xml.erb"
   owner node['tomcat']['user']
   group node['tomcat']['group']
   sensitive true
@@ -94,7 +94,7 @@ template "#{node['tomcat']['install_path']}/conf/server.xml" do
 end
 
 template "#{node['tomcat']['install_path']}/conf/web.xml" do
-  source 'web.xml.erb'
+  source "#{node['tomcat']['major_version']}/web.xml.erb"
   owner node['tomcat']['user']
   group node['tomcat']['group']
   mode 0644
@@ -129,7 +129,7 @@ link "#{node['tomcat']['install_path']}/logs" do
 end
 
 template "/etc/logrotate.d/tomcat8" do
-  source "logrotate.erb"
+  source "#{node['tomcat']['major_version']}/logrotate.erb"
   mode 0644
   variables(
     log_dir: "/var/log/tomcat8"
@@ -137,7 +137,7 @@ template "/etc/logrotate.d/tomcat8" do
 end
 
 template "#{node['tomcat']['install_path']}/conf/logging.properties" do
-  source "logging.properties.erb"
+  source "#{node['tomcat']['major_version']}/logging.properties.erb"
   owner node['tomcat']['user']
   group node['tomcat']['group']
   notifies :restart, "service[#{node['tomcat']['service_name']}]"
@@ -150,7 +150,7 @@ end
 unless node['tomcat']['exclude_manager_webapp']
   tomcat_vault = chef_vault_item("tomcat", "admin_manager")
   template "#{node['tomcat']['install_path']}/conf/tomcat-users.xml" do
-    source "tomcat-users.xml.erb"
+    source "#{node['tomcat']['major_version']}/tomcat-users.xml.erb"
     mode 0644
     owner node['tomcat']['user']
     group node['tomcat']['group']
@@ -182,7 +182,7 @@ unless node['tomcat']['exclude_manager_webapp']
 end
 
 template "#{node['tomcat']['install_path']}/conf/context.xml" do
-  source "context.xml.erb"
+  source "#{node['tomcat']['major_version']}/context.xml.erb"
   mode 0644
   owner node['tomcat']['user']
   group node['tomcat']['group']

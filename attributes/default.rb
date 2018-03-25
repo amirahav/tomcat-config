@@ -1,6 +1,7 @@
-default['tomcat']['install_path'] = '/opt/tomcat8'
-default['tomcat']['version'] = '8.5.23'
-default['tomcat']['service_name'] = 'tomcat_8'
+default['tomcat']['version'] = '9.0.6'
+default['tomcat']['major_version'] = node['tomcat']['version'].to_i
+default['tomcat']['install_path'] = "/opt/tomcat#{node['tomcat']['major_version']}"
+default['tomcat']['service_name'] = "tomcat_#{node['tomcat']['major_version']}"
 default['tomcat']['cors']['enabled'] = false
 default['tomcat']['cors']['allowed_origins'] = "*"
 default['tomcat']['cors']['allowed_methods'] = "GET,POST,HEAD,OPTIONS,PUT,PATCH"
